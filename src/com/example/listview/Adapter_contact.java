@@ -11,55 +11,52 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class Adapter_contact extends BaseAdapter{
-	
-	private ArrayList<ContactBean> list;
-	private Context context;
-	
-	public Adapter_contact(Context context, ArrayList<ContactBean> list) {
-		this.list = list;
-		this.context = context;
-	}
+public class Adapter_contact extends BaseAdapter {
 
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return list.size();
-	}
+    private ArrayList<ContactBean> list;
+    private Context context;
 
-	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return list.get(position);
-	}
+    public Adapter_contact(Context context, ArrayList<ContactBean> list) {
+        this.list = list;
+        this.context = context;
+    }
 
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
-	}
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = null;
-		if(convertView != null) {
-			view = convertView;
-		} else {
-			view = View.inflate(context, R.layout.item_contact_layout, null);
-		}
-		TextView item_tv_name = (TextView) view.findViewById(R.id.item_tv_name);
-		TextView item_tv_num = (TextView) view.findViewById(R.id.item_tv_num);
-		
-		ContactBean bean = list.get(position);
-		String name = "姓名：" + bean.name;
-		String phone = "电话：" + bean.phone;
-		
-		item_tv_name.setText(name);
-		item_tv_num.setText(phone);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = null;
+        if (convertView != null) {
+            view = convertView;
+        } else {
+            view = View.inflate(context, R.layout.item_contact_layout, null);
+        }
+        TextView item_tv_name = (TextView) view.findViewById(R.id.item_tv_name);
+        TextView item_tv_num = (TextView) view.findViewById(R.id.item_tv_num);
 
-		return view;
-	}
-	
+        ContactBean bean = list.get(position);
+        String name = "姓名：" + bean.name;
+        String phone = "电话：" + bean.phone;
+
+        item_tv_name.setText(name);
+        item_tv_num.setText(phone);
+
+        return view;
+    }
+
 
 }
