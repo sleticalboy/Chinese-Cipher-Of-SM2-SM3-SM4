@@ -243,7 +243,7 @@ public class SM4 {
             throw new Exception("key error!");
         }
 
-        ctx.setMode(SM4_DECRYPT);
+        ctx.setMode(SM4_ENCRYPT);
         sm4_setKey(ctx.getSk(), key);
     }
 
