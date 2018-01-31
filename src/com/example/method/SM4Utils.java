@@ -17,7 +17,7 @@ public class SM4Utils {
 
     private static final SM4Utils instance = new SM4Utils();
 
-    private SM4Utils() {
+    public SM4Utils() {
     }
 
     public static SM4Utils getInstance() {
@@ -45,7 +45,8 @@ public class SM4Utils {
 
             SM4 sm4 = new SM4();
             sm4.setEncryptKey(ctx, keyBytes);
-            byte[] encrypted = sm4.cryptECB(ctx, plainText.getBytes("GBK"));
+            byte[] input = plainText.getBytes("GBK");
+            byte[] encrypted = sm4.cryptECB(ctx, input);
             String cipherText = new BASE64Encoder().encode(encrypted);
             if (cipherText != null && cipherText.trim().length() > 0) {
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");

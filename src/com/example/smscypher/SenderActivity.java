@@ -1,21 +1,21 @@
 package com.example.smscypher;
 
-import java.util.ArrayList;
-
-import com.example.method.SM4Utils;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SenderActivity extends Activity {
+import com.example.method.SM4Utils;
 
-    private static Context mContext;
+import java.util.ArrayList;
+
+public class SenderActivity extends PermissionCheckActivity {
+
+    private Context mContext;
     private EditText et_number;
     private EditText et_content;
     private EditText et_inputKey;
@@ -34,6 +34,7 @@ public class SenderActivity extends Activity {
 
     }
 
+    // 联系人界面
     public void add(View v) {
         Intent intent = new Intent(this, ContactsActivity.class);
         //startActivity(intent);
@@ -51,22 +52,28 @@ public class SenderActivity extends Activity {
         }
     }
 
-
-    public void click(View v) {
+    // 加密短信内容
+    public void clickEvent(View v) {
         String content = et_content.getText().toString().trim();
         String key = et_inputKey.getText().toString().trim();
+        Log.d("SenderActivity", content);
+        Log.d("SenderActivity", key);
 
         SM4Utils sm4Utils = SM4Utils.getInstance();
         if (pendingContent_edit(content) && pendingKey(key)) {
             if (flag++ % 2 == 0) {
-                et_content.setText(sm4Utils.getEncryptStr(content, key));
+                String encryptStr = sm4Utils.getEncryptStr(content, key);
+                Log.d("SenderActivity", encryptStr);
+                et_content.setText(encryptStr);
             } else {
-                et_content.setText(sm4Utils.getDecryptStr(content, key));
+                String decryptStr = sm4Utils.getDecryptStr(content, key);
+                Log.d("SenderActivity", decryptStr);
+                et_content.setText(decryptStr);
             }
         }
     }
 
-    public void send(View v) {
+    public void sendMessage(View v) {
         String number = et_number.getText().toString().trim();
         String content = et_content.getText().toString().trim();
         String key = et_inputKey.getText().toString().trim();
@@ -79,7 +86,7 @@ public class SenderActivity extends Activity {
             for (String div : divideMessages) {
                 smsManager.sendTextMessage(number, null, div, null, null);
             }
-            Toast.makeText(mContext, "发送成功", 0).show();
+            Toast.makeText(mContext, "发送成功", Toast.LENGTH_SHORT).show();
             this.finish();
         }
     }

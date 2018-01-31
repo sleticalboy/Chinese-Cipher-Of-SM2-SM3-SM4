@@ -1,6 +1,5 @@
 package com.example.smscypher;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,7 +20,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class SmsActivity extends Activity implements OnItemClickListener {
+public class SmsActivity extends PermissionCheckActivity implements OnItemClickListener {
 
     private Context mContext;
     private ArrayList<String> smsList;

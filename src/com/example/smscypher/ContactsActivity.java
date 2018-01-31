@@ -1,12 +1,5 @@
 package com.example.smscypher;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import com.example.bean.ContactBean;
-import com.example.listview.Adapter_contact;
-
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -26,7 +19,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class ContactsActivity extends Activity implements OnItemClickListener {
+import com.example.bean.ContactBean;
+import com.example.listview.Adapter_contact;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+
+public class ContactsActivity extends PermissionCheckActivity implements OnItemClickListener {
 
     private Context mContext;
     private ListView lv_contact;
@@ -88,7 +87,7 @@ public class ContactsActivity extends Activity implements OnItemClickListener {
         }).start();
     }
 
-//    public void click(View v){
+//    public void clickEvent(View v){
 //    	for(int i=0;i<phoneContacts.size();i++){
 //    		ContactBean bean = phoneContacts.get(i);
 //    		System.out.println(bean.name);

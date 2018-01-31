@@ -1,6 +1,5 @@
 package com.example.smscypher;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +11,7 @@ import com.example.method.SM3Digest;
 /**
  * 生成秘钥
  */
-public class CreateKeyActivity extends Activity {
+public class CreateKeyActivity extends PermissionCheckActivity {
 
     private Context mContext;
     private EditText et_getKey;

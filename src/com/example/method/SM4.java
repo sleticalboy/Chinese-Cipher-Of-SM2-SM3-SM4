@@ -1,5 +1,7 @@
 package com.example.method;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -198,21 +200,28 @@ public class SM4 {
         PUT_ULONG_BE(ulbuf[32], output, 12);
     }
 
+    // 扩展/还原数组
     private byte[] padding(byte[] input, int mode) {
         if (input == null) {
             return null;
         }
 
-        byte[] ret = (byte[]) null;
+        byte[] ret;
         if (mode == SM4_ENCRYPT) {
-            int p = 16 - input.length % 16;
-            ret = new byte[input.length + p];
+            Log.d("SM4", "加密-->扩展数组长度");
+            int p = 16 - input.length % 16; // 16 - 余数 = 扩展的长度
+            ret = new byte[input.length + p]; // 扩展数组的长度 = input 的长度 + 扩展的长度
+            // 将 input 拷贝给 ret
             System.arraycopy(input, 0, ret, 0, input.length);
             for (int i = 0; i < p; i++) {
-                ret[input.length + i] = (byte) p;
+                ret[input.length + i] = (byte) p; // 将多出来的位置写满 p
             }
         } else {
+            Log.d("SM4", "解密-->还原数组");
+            // 取 input 最后一个元素, 即加密时的扩展长度
             int p = input[input.length - 1];
+            Log.d("SM4", "p:" + p);
+            Log.d("SM4", "input.length:" + input.length);
             ret = new byte[input.length - p];
             System.arraycopy(input, 0, ret, 0, input.length - p);
         }
