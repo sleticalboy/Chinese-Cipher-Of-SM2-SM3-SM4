@@ -37,7 +37,7 @@ public class ReceiverActivity extends Activity {
     public void click2(View v) {
         String key = et_key_rec.getText().toString().trim();
         String content = et_content_rec.getText().toString().trim();
-        SM4Utils sm4Utils = new SM4Utils();
+        SM4Utils sm4Utils = SM4Utils.getInstance();
         if (pendingKey(key) && pendingContent(content)) {
             try {
                 et_content_rec.setText(sm4Utils.getDecryptStr(content, key));

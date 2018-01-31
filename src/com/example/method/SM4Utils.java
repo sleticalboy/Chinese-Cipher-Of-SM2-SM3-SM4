@@ -12,9 +12,16 @@ public class SM4Utils {
     private String secretKey = "";
     // 向量
     private String iv = "";
+    // 16 进制字符串
     private boolean hexString = false;
 
-    public SM4Utils() {
+    private static final SM4Utils instance = new SM4Utils();
+
+    private SM4Utils() {
+    }
+
+    public static SM4Utils getInstance() {
+        return instance;
     }
 
     /**
@@ -23,11 +30,11 @@ public class SM4Utils {
      * @param plainText 明文
      * @return 密文
      */
-    public String encryptData_ECB(String plainText) {
+    public String encryptECB(String plainText) {
         try {
             SM4Context ctx = new SM4Context();
-            ctx.isPadding = true;
-            ctx.mode = SM4.SM4_ENCRYPT;
+            ctx.setPadding(true);
+            ctx.setMode(SM4.SM4_ENCRYPT);
 
             byte[] keyBytes;
             if (hexString) {
@@ -37,8 +44,8 @@ public class SM4Utils {
             }
 
             SM4 sm4 = new SM4();
-            sm4.sm4_setKey_enc(ctx, keyBytes);
-            byte[] encrypted = sm4.sm4_crypt_ecb(ctx, plainText.getBytes("GBK"));
+            sm4.setEncryptKey(ctx, keyBytes);
+            byte[] encrypted = sm4.cryptECB(ctx, plainText.getBytes("GBK"));
             String cipherText = new BASE64Encoder().encode(encrypted);
             if (cipherText != null && cipherText.trim().length() > 0) {
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");
@@ -58,11 +65,11 @@ public class SM4Utils {
      * @param cipherText 密文
      * @return 明文
      */
-    public String decryptData_ECB(String cipherText) {
+    public String decryptECB(String cipherText) {
         try {
             SM4Context ctx = new SM4Context();
-            ctx.isPadding = true;
-            ctx.mode = SM4.SM4_DECRYPT;
+            ctx.setPadding(true);
+            ctx.setMode(SM4.SM4_DECRYPT);
 
             byte[] keyBytes;
             if (hexString) {
@@ -72,8 +79,8 @@ public class SM4Utils {
             }
 
             SM4 sm4 = new SM4();
-            sm4.sm4_setKey_dec(ctx, keyBytes);
-            byte[] decrypted = sm4.sm4_crypt_ecb(ctx, new BASE64Decoder().decodeBuffer(cipherText));
+            sm4.setDecryptKey(ctx, keyBytes);
+            byte[] decrypted = sm4.cryptECB(ctx, new BASE64Decoder().decodeBuffer(cipherText));
             return new String(decrypted, "GBK");
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,14 +90,15 @@ public class SM4Utils {
 
     /**
      * (加密块链模式)
+     *
      * @param plainText
      * @return
      */
     public String encryptCBC(String plainText) {
         try {
             SM4Context ctx = new SM4Context();
-            ctx.isPadding = true;
-            ctx.mode = SM4.SM4_ENCRYPT;
+            ctx.setPadding(true);
+            ctx.setMode(SM4.SM4_ENCRYPT);
 
             byte[] keyBytes;
             byte[] ivBytes;
@@ -103,8 +111,8 @@ public class SM4Utils {
             }
 
             SM4 sm4 = new SM4();
-            sm4.sm4_setKey_enc(ctx, keyBytes);
-            byte[] encrypted = sm4.sm4_crypt_cbc(ctx, ivBytes, plainText.getBytes("GBK"));
+            sm4.setEncryptKey(ctx, keyBytes);
+            byte[] encrypted = sm4.cryptCBC(ctx, ivBytes, plainText.getBytes("GBK"));
             String cipherText = new BASE64Encoder().encode(encrypted);
             if (cipherText != null && cipherText.trim().length() > 0) {
                 Pattern p = Pattern.compile("\\s*|\t|\r|\n");
@@ -120,14 +128,15 @@ public class SM4Utils {
 
     /**
      * (加密块链模式)
+     *
      * @param cipherText
      * @return
      */
     public String decryptCBC(String cipherText) {
         try {
             SM4Context ctx = new SM4Context();
-            ctx.isPadding = true;
-            ctx.mode = SM4.SM4_DECRYPT;
+            ctx.setPadding(true);
+            ctx.setMode(SM4.SM4_DECRYPT);
 
             byte[] keyBytes;
             byte[] ivBytes;
@@ -140,8 +149,8 @@ public class SM4Utils {
             }
 
             SM4 sm4 = new SM4();
-            sm4.sm4_setKey_dec(ctx, keyBytes);
-            byte[] decrypted = sm4.sm4_crypt_cbc(ctx, ivBytes, new BASE64Decoder().decodeBuffer(cipherText));
+            sm4.setDecryptKey(ctx, keyBytes);
+            byte[] decrypted = sm4.cryptCBC(ctx, ivBytes, new BASE64Decoder().decodeBuffer(cipherText));
             return new String(decrypted, "GBK");
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,12 +162,11 @@ public class SM4Utils {
      * 加密
      */
     public String getEncryptStr(String inputStr, String secretKey) {
-        SM4Utils sm4 = new SM4Utils();
-        sm4.secretKey = secretKey;  //meF8U9wHFOMfs2Y9
-        sm4.hexString = false;
+        this.secretKey = secretKey;  //meF8U9wHFOMfs2Y9
+        this.hexString = false;
 
         System.out.println("ECB模式");
-        String cipherText = sm4.encryptData_ECB(inputStr);
+        String cipherText = encryptECB(inputStr);
         System.out.println("ECB模式");
         return cipherText;
     }
@@ -167,11 +175,9 @@ public class SM4Utils {
      * 解密
      */
     public String getDecryptStr(String inputStr, String secretKey) {
-        SM4Utils sm4Util = new SM4Utils();
-        sm4Util.secretKey = secretKey; // meF8U9wHFOMfs2Y9
-        sm4Util.hexString = false;
-        String plainText = sm4Util.decryptData_ECB(inputStr);
-        return plainText;
+        this.secretKey = secretKey; // meF8U9wHFOMfs2Y9
+        this.hexString = false;
+        return decryptECB(inputStr);
     }
 
 }

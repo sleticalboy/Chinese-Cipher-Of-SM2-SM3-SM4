@@ -56,7 +56,7 @@ public class SenderActivity extends Activity {
         String content = et_content.getText().toString().trim();
         String key = et_inputKey.getText().toString().trim();
 
-        SM4Utils sm4Utils = new SM4Utils();
+        SM4Utils sm4Utils = SM4Utils.getInstance();
         if (pendingContent_edit(content) && pendingKey(key)) {
             if (flag++ % 2 == 0) {
                 et_content.setText(sm4Utils.getEncryptStr(content, key));

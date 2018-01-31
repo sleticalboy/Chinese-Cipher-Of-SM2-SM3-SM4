@@ -225,7 +225,7 @@ public class SM4 {
      * @param key
      * @throws Exception
      */
-    public void sm4_setKey_enc(SM4Context ctx, byte[] key) throws Exception {
+    public void setEncryptKey(SM4Context ctx, byte[] key) throws Exception {
         if (ctx == null) {
             throw new Exception("ctx is null!");
         }
@@ -234,8 +234,8 @@ public class SM4 {
             throw new Exception("key error!");
         }
 
-        ctx.mode = SM4_ENCRYPT;
-        sm4_setKey(ctx.sk, key);
+        ctx.setMode(SM4_DECRYPT);
+        sm4_setKey(ctx.getSk(), key);
     }
 
     /**
@@ -244,7 +244,7 @@ public class SM4 {
      * @param key
      * @throws Exception
      */
-    public void sm4_setKey_dec(SM4Context ctx, byte[] key) throws Exception {
+    public void setDecryptKey(SM4Context ctx, byte[] key) throws Exception {
         if (ctx == null) {
             throw new Exception("ctx is null!");
         }
@@ -254,10 +254,10 @@ public class SM4 {
         }
 
         int i = 0;
-        ctx.mode = SM4_DECRYPT;
-        sm4_setKey(ctx.sk, key);
+        ctx.setMode(SM4_DECRYPT);
+        sm4_setKey(ctx.getSk(), key);
         for (i = 0; i < 16; i++) {
-            swap(ctx.sk, i);
+            swap(ctx.getSk(), i);
         }
     }
 
@@ -269,12 +269,12 @@ public class SM4 {
      * @return
      * @throws Exception
      */
-    public byte[] sm4_crypt_ecb(SM4Context ctx, byte[] input) throws Exception {
+    public byte[] cryptECB(SM4Context ctx, byte[] input) throws Exception {
         if (input == null) {
             throw new Exception("input is null!");
         }
 
-        if ((ctx.isPadding) && (ctx.mode == SM4_ENCRYPT)) {
+        if ((ctx.isPadding()) && (ctx.getMode() == SM4_ENCRYPT)) {
             input = padding(input, SM4_ENCRYPT);
         }
 
@@ -285,12 +285,12 @@ public class SM4 {
             byte[] in = new byte[16];
             byte[] out = new byte[16];
             bins.read(in);
-            sm4_one_round(ctx.sk, in, out);
+            sm4_one_round(ctx.getSk(), in, out);
             bous.write(out);
         }
 
         byte[] output = bous.toByteArray();
-        if (ctx.isPadding && ctx.mode == SM4_DECRYPT) {
+        if (ctx.isPadding() && ctx.getMode() == SM4_DECRYPT) {
             output = padding(output, SM4_DECRYPT);
         }
         bins.close();
@@ -307,7 +307,7 @@ public class SM4 {
      * @return
      * @throws Exception
      */
-    public byte[] sm4_crypt_cbc(SM4Context ctx, byte[] iv, byte[] input) throws Exception {
+    public byte[] cryptCBC(SM4Context ctx, byte[] iv, byte[] input) throws Exception {
         if (iv == null || iv.length != 16) {
             throw new Exception("iv error!");
         }
@@ -316,7 +316,7 @@ public class SM4 {
             throw new Exception("input is null!");
         }
 
-        if (ctx.isPadding && ctx.mode == SM4_ENCRYPT) {
+        if (ctx.isPadding() && ctx.getMode() == SM4_ENCRYPT) {
             input = padding(input, SM4_ENCRYPT);
         }
 
@@ -324,7 +324,7 @@ public class SM4 {
         int length = input.length;
         ByteArrayInputStream bins = new ByteArrayInputStream(input);
         ByteArrayOutputStream bous = new ByteArrayOutputStream();
-        if (ctx.mode == SM4_ENCRYPT) {
+        if (ctx.getMode() == SM4_ENCRYPT) {
             for (; length > 0; length -= 16) {
                 byte[] in = new byte[16];
                 byte[] out = new byte[16];
@@ -334,7 +334,7 @@ public class SM4 {
                 for (i = 0; i < 16; i++) {
                     out[i] = ((byte) (in[i] ^ iv[i]));
                 }
-                sm4_one_round(ctx.sk, out, out1);
+                sm4_one_round(ctx.getSk(), out, out1);
                 System.arraycopy(out1, 0, iv, 0, 16);
                 bous.write(out1);
             }
@@ -347,7 +347,7 @@ public class SM4 {
 
                 bins.read(in);
                 System.arraycopy(in, 0, temp, 0, 16);
-                sm4_one_round(ctx.sk, in, out);
+                sm4_one_round(ctx.getSk(), in, out);
                 for (i = 0; i < 16; i++) {
                     out1[i] = ((byte) (out[i] ^ iv[i]));
                 }
@@ -357,7 +357,7 @@ public class SM4 {
         }
 
         byte[] output = bous.toByteArray();
-        if (ctx.isPadding && ctx.mode == SM4_DECRYPT) {
+        if (ctx.isPadding() && ctx.getMode() == SM4_DECRYPT) {
             output = padding(output, SM4_DECRYPT);
         }
         bins.close();
