@@ -1,8 +1,5 @@
 package com.example.smscypher;
 
-import com.example.method.SM2Utils;
-import com.example.method.SM3Digest;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.method.SM3Digest;
+
+/**
+ * 生成秘钥
+ */
 public class CreateKeyActivity extends Activity {
 
     private Context mContext;
@@ -27,6 +29,9 @@ public class CreateKeyActivity extends Activity {
         et_getKey = (EditText) findViewById(R.id.et_getKey);
     }
 
+    /**
+     * 生成/还原秘钥
+     */
     public void click1(View v) {
         String key = et_getKey.getText().toString().trim();
         SM3Digest sm3 = new SM3Digest();

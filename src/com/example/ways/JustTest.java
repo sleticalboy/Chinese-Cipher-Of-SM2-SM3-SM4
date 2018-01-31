@@ -1,6 +1,7 @@
 package com.example.ways;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -23,13 +24,21 @@ public class JustTest {
         String ret = "";
         for (int i = 0; i < len; i++) {
             String str = null;
-            int hightPos, lowPos; // 定义高低位
+            int heightPos, lowPos; // 定义高低位
             Random random = new Random();
-            hightPos = (176 + Math.abs(random.nextInt(39))); //获取高位值
+            heightPos = (176 + Math.abs(random.nextInt(39))); //获取高位值
             lowPos = (161 + Math.abs(random.nextInt(93))); //获取低位值
+            /*
+             * 状态矩阵中的元素按照下面的方式映射为一个新的字节：
+             *     把该字节的高4位作为行值，低4位作为列值，取出S盒或者逆S盒中对应的行的元素作为输出。
+             */
+            // 用于存储高位值和低位值
             byte[] b = new byte[2];
-            b[0] = (new Integer(hightPos).byteValue());
+            // 高4位-行值
+            b[0] = (new Integer(heightPos).byteValue());
+            // 低4位-列值
             b[1] = (new Integer(lowPos).byteValue());
+
             try {
                 str = new String(b, "GBk"); //转成中文
             } catch (UnsupportedEncodingException ex) {
@@ -82,6 +91,11 @@ public class JustTest {
 
     // 生成文件夹
     public static void makeRootDirectory(String filePath) {
+//        try {
+//            Runtime.getRuntime().exec("mkdir -p " + filePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         File file = null;
         try {
             file = new File(filePath);

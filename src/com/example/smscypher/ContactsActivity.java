@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-
 public class ContactsActivity extends Activity implements OnItemClickListener {
 
     private Context mContext;
@@ -37,7 +36,7 @@ public class ContactsActivity extends Activity implements OnItemClickListener {
     /**
      * 获取库Phon表字段
      **/
-    private static final String[] PHONES_PROJECTION = new String[]{
+    private static final String[] PHONES_PROJECTION = {
             Phone.DISPLAY_NAME, Phone.NUMBER, Photo.PHOTO_ID, Phone.CONTACT_ID};
 
     /**

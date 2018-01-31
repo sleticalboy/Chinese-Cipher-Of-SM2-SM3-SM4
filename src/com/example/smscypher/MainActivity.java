@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+/**
+ * 入口类
+ */
 public class MainActivity extends Activity {
 
     @Override
@@ -23,23 +26,27 @@ public class MainActivity extends Activity {
 
     }
 
+    // 发送加密短信
     public void click1(View v) {
         Intent intent = new Intent(this, SenderActivity.class);
         startActivity(intent);
     }
 
+    // 破解加密短信
     public void click2(View v) {
         Intent intent = new Intent(this, ReceiverActivity.class);
         startActivity(intent);
     }
 
+    // 秘钥生成
     public void click3(View v) {
         Intent intent = new Intent(this, CreateKeyActivity.class);
         startActivity(intent);
     }
 
+    // 口令生成
     public void click4(View v) {
-        Toast.makeText(getApplicationContext(), "正在生成中，请稍后。。。", 0).show();
+        Toast.makeText(getApplicationContext(), "正在生成中，请稍后。。。", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             @Override
             public void run() {

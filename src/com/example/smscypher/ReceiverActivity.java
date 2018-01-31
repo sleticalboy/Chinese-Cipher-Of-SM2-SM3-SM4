@@ -1,7 +1,6 @@
 package com.example.smscypher;
 
 import com.example.method.SM4Utils;
-import com.example.ways.OperationUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -41,7 +40,7 @@ public class ReceiverActivity extends Activity {
         SM4Utils sm4Utils = new SM4Utils();
         if (pendingKey(key) && pendingContent(content)) {
             try {
-                et_content_rec.setText(sm4Utils.getDecStr(content, key));
+                et_content_rec.setText(sm4Utils.getDecryptStr(content, key));
             } catch (Exception e) {
                 Log.e("这里解不开", "");
             }

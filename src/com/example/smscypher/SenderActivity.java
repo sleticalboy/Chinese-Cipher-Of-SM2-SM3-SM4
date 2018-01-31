@@ -59,9 +59,9 @@ public class SenderActivity extends Activity {
         SM4Utils sm4Utils = new SM4Utils();
         if (pendingContent_edit(content) && pendingKey(key)) {
             if (flag++ % 2 == 0) {
-                et_content.setText(sm4Utils.getEncStr(content, key));
+                et_content.setText(sm4Utils.getEncryptStr(content, key));
             } else {
-                et_content.setText(sm4Utils.getDecStr(content, key));
+                et_content.setText(sm4Utils.getDecryptStr(content, key));
             }
         }
     }

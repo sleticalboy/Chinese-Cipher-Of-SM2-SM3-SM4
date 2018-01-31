@@ -1,13 +1,5 @@
 package com.example.smscypher;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
-import com.example.bean.ContactBean;
-import com.example.listview.Adapter_contact;
-import com.example.listview.Adapter_sms;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +11,15 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
+import com.example.listview.Adapter_sms;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class SmsActivity extends Activity implements OnItemClickListener {
 

@@ -6,7 +6,8 @@
 
     <uses-sdk
         android:minSdkVersion="19"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="26" />
+
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -14,7 +15,7 @@
    <uses-permission android:name="android.permission.READ_CONTACTS"/>
    <!-- 拨打电话权限 -->
    <uses-permission android:name="android.permission.CALL_PHONE"/>
-   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
@@ -29,12 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.smscypher.ReceiverActivity"></activity>
-        <activity android:name="com.example.smscypher.SenderActivity"></activity>
-        <activity android:name="com.example.smscypher.ContactsActivity"></activity>
-        <activity android:name="com.example.smscypher.LinkMenActivicy"></activity>
-        <activity android:name="com.example.smscypher.SmsActivity"></activity>
-        <activity android:name="com.example.smscypher.CreateKeyActivity"></activity>
+        <activity android:name="com.example.smscypher.ReceiverActivity" />
+        <activity android:name="com.example.smscypher.SenderActivity" />
+        <activity android:name="com.example.smscypher.ContactsActivity" />
+        <activity android:name="com.example.smscypher.LinkMenActivicy" />
+        <activity android:name="com.example.smscypher.SmsActivity" />
+        <activity android:name="com.example.smscypher.CreateKeyActivity" />
     </application>
      
 

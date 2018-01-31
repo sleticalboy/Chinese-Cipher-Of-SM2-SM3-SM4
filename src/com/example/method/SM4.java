@@ -3,11 +3,19 @@ package com.example.method;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+/**
+ * SM4 分组加密算法
+ */
 public class SM4 {
-    // 加密
+
+    /**
+     * 加密
+     */
     public static final int SM4_ENCRYPT = 1;
 
-    // 解密
+    /**
+     * 解密
+     */
     public static final int SM4_DECRYPT = 0;
 
     private long GET_ULONG_BE(byte[] b, int i) {
@@ -25,6 +33,13 @@ public class SM4 {
         b[i + 3] = (byte) (int) (0xFF & n);
     }
 
+    /**
+     * 左移指令
+     *
+     * @param x 数据
+     * @param n 移动位数
+     * @return 结果
+     */
     private long SHL(long x, int n) {
         return (x & 0xFFFFFFFF) << n;
     }
@@ -33,13 +48,20 @@ public class SM4 {
         return SHL(x, n) | x >> (32 - n);
     }
 
-    private void SWAP(long[] sk, int i) {
+    /**
+     * 两个数交换位置
+     */
+    private void swap(long[] sk, int i) {
         long t = sk[i];
         sk[i] = sk[(31 - i)];
         sk[(31 - i)] = t;
     }
 
-    public static final byte[] SboxTable = {(byte) 0xd6, (byte) 0x90, (byte) 0xe9, (byte) 0xfe,
+    /**
+     * AES 加密中的 S box
+     */
+    public static final byte[] SboxTable = {
+            (byte) 0xd6, (byte) 0x90, (byte) 0xe9, (byte) 0xfe,
             (byte) 0xcc, (byte) 0xe1, 0x3d, (byte) 0xb7, 0x16, (byte) 0xb6,
             0x14, (byte) 0xc2, 0x28, (byte) 0xfb, 0x2c, 0x05, 0x2b, 0x67,
             (byte) 0x9a, 0x76, 0x2a, (byte) 0xbe, 0x04, (byte) 0xc3,
@@ -77,18 +99,29 @@ public class SM4 {
             (byte) 0x96, 0x77, 0x7e, 0x65, (byte) 0xb9, (byte) 0xf1, 0x09,
             (byte) 0xc5, 0x6e, (byte) 0xc6, (byte) 0x84, 0x18, (byte) 0xf0,
             0x7d, (byte) 0xec, 0x3a, (byte) 0xdc, 0x4d, 0x20, 0x79,
-            (byte) 0xee, 0x5f, 0x3e, (byte) 0xd7, (byte) 0xcb, 0x39, 0x48};
+            (byte) 0xee, 0x5f, 0x3e, (byte) 0xd7, (byte) 0xcb, 0x39, 0x48
+    };
 
-    public static final int[] FK = {0xa3b1bac6, 0x56aa3350, 0x677d9197, 0xb27022dc};
+    /**
+     * 外键？
+     */
+    public static final int[] FK = {
+            0xa3b1bac6, 0x56aa3350, 0x677d9197, 0xb27022dc
+    };
 
-    public static final int[] CK = {0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
+    /**
+     * 检查约束？
+     */
+    public static final int[] CK = {
+            0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
             0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
             0xe0e7eef5, 0xfc030a11, 0x181f262d, 0x343b4249,
             0x50575e65, 0x6c737a81, 0x888f969d, 0xa4abb2b9,
             0xc0c7ced5, 0xdce3eaf1, 0xf8ff060d, 0x141b2229,
             0x30373e45, 0x4c535a61, 0x686f767d, 0x848b9299,
             0xa0a7aeb5, 0xbcc3cad1, 0xd8dfe6ed, 0xf4fb0209,
-            0x10171e25, 0x2c333a41, 0x484f565d, 0x646b7279};
+            0x10171e25, 0x2c333a41, 0x484f565d, 0x646b7279
+    };
 
     private byte sm4Sbox(byte inch) {
         int i = inch & 0xFF;
@@ -130,7 +163,7 @@ public class SM4 {
         return rk;
     }
 
-    private void sm4_setkey(long[] SK, byte[] key) {
+    private void sm4_setKey(long[] SK, byte[] key) {
         long[] MK = new long[4];
         long[] k = new long[36];
         int i = 0;
@@ -186,7 +219,13 @@ public class SM4 {
         return ret;
     }
 
-    public void sm4_setkey_enc(SM4_Context ctx, byte[] key) throws Exception {
+    /**
+     * 设置加密秘钥
+     * @param ctx
+     * @param key
+     * @throws Exception
+     */
+    public void sm4_setKey_enc(SM4Context ctx, byte[] key) throws Exception {
         if (ctx == null) {
             throw new Exception("ctx is null!");
         }
@@ -196,10 +235,16 @@ public class SM4 {
         }
 
         ctx.mode = SM4_ENCRYPT;
-        sm4_setkey(ctx.sk, key);
+        sm4_setKey(ctx.sk, key);
     }
 
-    public void sm4_setkey_dec(SM4_Context ctx, byte[] key) throws Exception {
+    /**
+     * 设置解密秘钥
+     * @param ctx
+     * @param key
+     * @throws Exception
+     */
+    public void sm4_setKey_dec(SM4Context ctx, byte[] key) throws Exception {
         if (ctx == null) {
             throw new Exception("ctx is null!");
         }
@@ -210,13 +255,21 @@ public class SM4 {
 
         int i = 0;
         ctx.mode = SM4_DECRYPT;
-        sm4_setkey(ctx.sk, key);
+        sm4_setKey(ctx.sk, key);
         for (i = 0; i < 16; i++) {
-            SWAP(ctx.sk, i);
+            swap(ctx.sk, i);
         }
     }
 
-    public byte[] sm4_crypt_ecb(SM4_Context ctx, byte[] input) throws Exception {
+    /**
+     * ecb 模式加密
+     *
+     * @param ctx
+     * @param input
+     * @return
+     * @throws Exception
+     */
+    public byte[] sm4_crypt_ecb(SM4Context ctx, byte[] input) throws Exception {
         if (input == null) {
             throw new Exception("input is null!");
         }
@@ -245,7 +298,16 @@ public class SM4 {
         return output;
     }
 
-    public byte[] sm4_crypt_cbc(SM4_Context ctx, byte[] iv, byte[] input) throws Exception {
+    /**
+     * cbc 模式加密
+     *
+     * @param ctx
+     * @param iv
+     * @param input
+     * @return
+     * @throws Exception
+     */
+    public byte[] sm4_crypt_cbc(SM4Context ctx, byte[] iv, byte[] input) throws Exception {
         if (iv == null || iv.length != 16) {
             throw new Exception("iv error!");
         }
