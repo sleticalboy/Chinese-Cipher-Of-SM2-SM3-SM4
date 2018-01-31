@@ -1,0 +1,11 @@
+
+# studio files
+.idea/
+local.properties
+*.iml
+
+# project common files
+*gradle
+*build
+*gen
+*pictures
