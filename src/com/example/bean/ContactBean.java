@@ -7,6 +7,4 @@ public class ContactBean {
     public String name;
     public String phone;
     public Bitmap photo;
-
-
 }

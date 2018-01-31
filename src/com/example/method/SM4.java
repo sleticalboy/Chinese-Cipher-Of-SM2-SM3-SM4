@@ -4,12 +4,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class SM4 {
+    // 加密
     public static final int SM4_ENCRYPT = 1;
 
+    // 解密
     public static final int SM4_DECRYPT = 0;
 
     private long GET_ULONG_BE(byte[] b, int i) {
-        long n = (long) (b[i] & 0xff) << 24 | (long) ((b[i + 1] & 0xff) << 16) | (long) ((b[i + 2] & 0xff) << 8) | (long) (b[i + 3] & 0xff) & 0xffffffffL;
+        long n = (long) (b[i] & 0xff) << 24
+                | (long) ((b[i + 1] & 0xff) << 16)
+                | (long) ((b[i + 2] & 0xff) << 8)
+                | (long) (b[i + 3] & 0xff) & 0xffffffffL;
         return n;
     }
 
