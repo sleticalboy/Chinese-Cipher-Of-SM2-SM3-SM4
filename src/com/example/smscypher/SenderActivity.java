@@ -21,11 +21,18 @@ public class SenderActivity extends PermissionCheckActivity {
     private EditText et_inputKey;
     private Integer flag = 0;
 
+    private int mode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sender);
+
+        if (getIntent() != null) {
+            mode = getIntent().getIntExtra("mode", -1);
+        }
+
         mContext = this;
 
         et_number = (EditText) findViewById(R.id.et_number);
@@ -56,18 +63,14 @@ public class SenderActivity extends PermissionCheckActivity {
     public void clickEvent(View v) {
         String content = et_content.getText().toString().trim();
         String key = et_inputKey.getText().toString().trim();
-        Log.d("SenderActivity", content);
-        Log.d("SenderActivity", key);
 
         SM4Utils sm4Utils = SM4Utils.getInstance();
         if (pendingContent_edit(content) && pendingKey(key)) {
             if (flag++ % 2 == 0) {
-                String encryptStr = sm4Utils.getEncryptStr(content, key);
-                Log.d("SenderActivity", encryptStr);
+                String encryptStr = sm4Utils.getEncryptStr(content, key, mode);
                 et_content.setText(encryptStr);
             } else {
-                String decryptStr = sm4Utils.getDecryptStr(content, key);
-                Log.d("SenderActivity", decryptStr);
+                String decryptStr = sm4Utils.getDecryptStr(content, key, mode);
                 et_content.setText(decryptStr);
             }
         }

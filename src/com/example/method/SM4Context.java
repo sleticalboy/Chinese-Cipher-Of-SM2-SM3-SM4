@@ -3,7 +3,7 @@ package com.example.method;
 public class SM4Context {
 
     /**
-     * 加密模式
+     * 加密还是解密
      */
     private int mode;
 

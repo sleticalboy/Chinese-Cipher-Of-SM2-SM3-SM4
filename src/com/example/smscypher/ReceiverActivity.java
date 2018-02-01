@@ -17,11 +17,18 @@ public class ReceiverActivity extends Activity {
     private EditText et_key_rec;
     private EditText et_content_rec;
 
+    private int mode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receiver);
+
+        if (getIntent() != null) {
+            mode = getIntent().getIntExtra("mode", -1);
+        }
+
         mContext = this;
 
         et_key_rec = (EditText) findViewById(R.id.et_key_rec);
@@ -40,7 +47,7 @@ public class ReceiverActivity extends Activity {
         SM4Utils sm4Utils = SM4Utils.getInstance();
         if (pendingKey(key) && pendingContent(content)) {
             try {
-                et_content_rec.setText(sm4Utils.getDecryptStr(content, key));
+                et_content_rec.setText(sm4Utils.getDecryptStr(content, key, mode));
             } catch (Exception e) {
                 Log.e("这里解不开", "");
             }
@@ -75,7 +82,5 @@ public class ReceiverActivity extends Activity {
             String info = data.getStringExtra("info");
             et_content_rec.setText(info);
         }
-
     }
-
 }

@@ -1,5 +1,7 @@
 package com.example.method;
 
+import android.util.Log;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,10 +10,14 @@ import sun.misc.BASE64Encoder;
 
 public class SM4Utils {
 
+    private static final String TAG = "SM4Utils";
+
     // 秘钥
     private String secretKey = "";
-    // 向量
-    private String iv = "";
+    // ECB 不需要初始化向量
+    // private String iv = "";
+    // CBC 需要初始化向量
+    private String iv = "a0fe7c7c98e09e8c";
     // 16 进制字符串
     private boolean hexString = false;
 
@@ -162,23 +168,44 @@ public class SM4Utils {
     /**
      * 加密
      */
-    public String getEncryptStr(String inputStr, String secretKey) {
+    public String getEncryptStr(String inputStr, String secretKey, int mode) {
         this.secretKey = secretKey;  //meF8U9wHFOMfs2Y9
         this.hexString = false;
+        String result;
+        if (mode == SM4.ENCRYPT_MODE_ECB) {
+            result = encryptECB(inputStr);
+            Log.d(TAG, "加密模式：ECB");
+        } else if (mode == SM4.ENCRYPT_MODE_CBC) {
+            result = encryptCBC(inputStr);
+            Log.d(TAG, "加密模式：CBC");
+        } else {
+            throw new IllegalArgumentException("illegal mode " + mode);
+        }
 
-        System.out.println("ECB模式");
-        String cipherText = encryptECB(inputStr);
-        System.out.println("ECB模式");
-        return cipherText;
+        Log.d(TAG, "秘钥：" + secretKey);
+        Log.d(TAG, "加密结果：" + result);
+        return result;
     }
 
     /**
      * 解密
      */
-    public String getDecryptStr(String inputStr, String secretKey) {
+    public String getDecryptStr(String inputStr, String secretKey, int mode) {
         this.secretKey = secretKey; // meF8U9wHFOMfs2Y9
         this.hexString = false;
-        return decryptECB(inputStr);
+        String result;
+        if (mode == SM4.ENCRYPT_MODE_ECB) {
+            result = decryptECB(inputStr);
+            Log.d(TAG, "解密模式：ECB");
+        } else if (mode == SM4.ENCRYPT_MODE_CBC) {
+            result = decryptCBC(inputStr);
+            Log.d(TAG, "解密模式：CBC");
+        } else {
+            throw new IllegalArgumentException("illegal mode " + mode);
+        }
+        Log.d(TAG, "秘钥：" + secretKey);
+        Log.d(TAG, "解密结果：" + result);
+        return result;
     }
 
 }

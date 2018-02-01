@@ -142,6 +142,12 @@ public class SM3Digest {
 //		System.out.println(s.toUpperCase());
 //	}
 
+    /**
+     * 生成加密秘钥
+     *
+     * @param inputStr 明文秘钥
+     * @return 密文秘钥
+     */
     public String getKey(String inputStr) {
         byte[] md = new byte[32];
         byte[] msg1 = inputStr.getBytes();

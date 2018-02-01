@@ -5,7 +5,7 @@ local.properties
 *.iml
 
 # project common files
-*gradle
+.gradle/
 *build
 *gen
 *pictures

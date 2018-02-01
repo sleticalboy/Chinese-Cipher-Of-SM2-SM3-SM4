@@ -20,6 +20,15 @@ public class SM4 {
      */
     public static final int SM4_DECRYPT = 0;
 
+    /**
+     * ECB 加密模式
+     */
+    public static final int ENCRYPT_MODE_ECB = 0xECB;
+    /**
+     * CBC 加密模式
+     */
+    public static final int ENCRYPT_MODE_CBC = 0xCBC;
+
     private long GET_ULONG_BE(byte[] b, int i) {
         long n = (long) (b[i] & 0xff) << 24
                 | (long) ((b[i + 1] & 0xff) << 16)
@@ -220,8 +229,6 @@ public class SM4 {
             Log.d("SM4", "解密-->还原数组");
             // 取 input 最后一个元素, 即加密时的扩展长度
             int p = input[input.length - 1];
-            Log.d("SM4", "p:" + p);
-            Log.d("SM4", "input.length:" + input.length);
             ret = new byte[input.length - p];
             System.arraycopy(input, 0, ret, 0, input.length - p);
         }
@@ -230,6 +237,7 @@ public class SM4 {
 
     /**
      * 设置加密秘钥
+     *
      * @param ctx
      * @param key
      * @throws Exception
@@ -249,6 +257,7 @@ public class SM4 {
 
     /**
      * 设置解密秘钥
+     *
      * @param ctx
      * @param key
      * @throws Exception
